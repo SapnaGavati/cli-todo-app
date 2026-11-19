@@ -2,11 +2,14 @@ import argparse
 from storage import load_tasks, save_tasks
 
 def add_task(title):
+    if not title.strip():
+        print("Title cannot be empty")
+        return
     tasks = load_tasks()
     new_id = max((t["id"] for t in tasks), default=0) + 1
-    tasks.append({"id": new_id, "title": title, "done": False})
+    tasks.append({"id": new_id, "title": title.strip(), "done": False})
     save_tasks(tasks)
-    print(f"Added task {new_id}: {title}")
+    print(f"Added task {new_id}: {title.strip()}")
 
 def list_tasks():
     tasks = load_tasks()
@@ -55,6 +58,8 @@ def main():
         complete_task(args.task_id)
     elif args.command == "delete":
         delete_task(args.task_id)
+    else:
+        parser.print_help()
 
 if __name__ == "__main__":
     main()

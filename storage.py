@@ -6,8 +6,11 @@ FILE = Path("tasks.json")
 def load_tasks():
     if not FILE.exists():
         return []
-    with open(FILE) as f:
-        return json.load(f)
+    try:
+        with open(FILE) as f:
+            return json.load(f)
+    except json.JSONDecodeError:
+        return []
 
 def save_tasks(tasks):
     with open(FILE, "w") as f:
